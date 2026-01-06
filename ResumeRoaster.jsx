@@ -20,11 +20,21 @@ const ResumeRoaster = () => {
     }
   }, [isPremium]);
 
+  // Push ads after content loads
+  useEffect(() => {
+    if (!isPremium && typeof window !== 'undefined') {
+      try {
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      } catch (e) {
+        console.error('AdSense error:', e);
+      }
+    }
+  }, [results, isPremium]);
+
   const handleFileUpload = async (e) => {
     const uploadedFile = e.target.files[0];
     if (!uploadedFile) return;
 
-    // Validate file type
     const validTypes = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain'];
     if (!validTypes.includes(uploadedFile.type)) {
       alert('Please upload a PDF, DOCX, or TXT file');
@@ -37,15 +47,10 @@ const ResumeRoaster = () => {
     setShowPaywall(false);
 
     try {
-      // Read file content
       const text = await readFileContent(uploadedFile);
-      
-      // Call Claude API for analysis
       const analysis = await analyzeResume(text);
-      
       setResults(analysis);
       
-      // Show paywall after brief preview (for free users)
       if (!isPremium) {
         setTimeout(() => {
           setShowPaywall(true);
@@ -69,12 +74,11 @@ const ResumeRoaster = () => {
   };
 
   const analyzeResume = async (resumeText) => {
-    // Call Anthropic Claude API
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': 'YOUR_API_KEY_HERE', // Replace with actual API key
+        'x-api-key': 'YOUR_API_KEY_HERE',
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
@@ -100,7 +104,6 @@ ${resumeText}`
     const data = await response.json();
     const analysisText = data.content[0].text;
 
-    // Parse the response
     return {
       roast: extractSection(analysisText, 'roast'),
       score: extractScore(analysisText),
@@ -125,25 +128,12 @@ ${resumeText}`
     return match ? parseInt(match[1]) : 0;
   };
 
-  const handleEmailCapture = (e) => {
-    e.preventDefault();
-    setEmailCaptured(true);
-    // Here you would send the email to your backend/email service
-    alert('Thanks! Check your email for exclusive resume tips.');
-  };
-
   const handleUpgradeToPremium = () => {
-    // Redirect to payment page (Stripe, etc.)
     alert('Redirecting to payment... (integrate with Stripe here)');
-    // For demo purposes, we'll just set premium to true
-    // In production, this would only happen after successful payment
-    // setIsPremium(true);
   };
 
   const handlePaywallPurchase = () => {
-    // Process payment
     alert('Processing payment... (integrate with Stripe here)');
-    // After successful payment:
     setShowPaywall(false);
   };
 
@@ -238,6 +228,18 @@ ${resumeText}`
               <p className="text-gray-600">Trained on thousands of successful resumes</p>
             </div>
           </div>
+
+          {/* Google Ad - Banner Ad Below Hero (Free Tier Only) */}
+          {!isPremium && (
+            <div className="mt-12">
+              <ins className="adsbygoogle"
+                   style={{ display: 'block' }}
+                   data-ad-client="ca-pub-XXXXXXXXXX"
+                   data-ad-slot="1234567890"
+                   data-ad-format="auto"
+                   data-full-width-responsive="true"></ins>
+            </div>
+          )}
         </div>
       )}
 
@@ -268,6 +270,18 @@ ${resumeText}`
             </div>
             <p className="text-xl leading-relaxed">{results.roast}</p>
           </div>
+
+          {/* Google Ad - Between Roast and Score (Free Tier Only) */}
+          {!isPremium && (
+            <div className="mb-8">
+              <ins className="adsbygoogle"
+                   style={{ display: 'block' }}
+                   data-ad-client="ca-pub-XXXXXXXXXX"
+                   data-ad-slot="9876543210"
+                   data-ad-format="auto"
+                   data-full-width-responsive="true"></ins>
+            </div>
+          )}
 
           {/* Score */}
           <div className="bg-white rounded-2xl shadow-xl p-8 mb-8 text-center">
@@ -303,6 +317,10 @@ ${resumeText}`
                     <li className="flex items-center gap-3">
                       <CheckCircle className="w-5 h-5 text-green-500" />
                       <span>Detailed improvement roadmap</span>
+                    </li>
+                    <li className="flex items-center gap-3">
+                      <CheckCircle className="w-5 h-5 text-green-500" />
+                      <span>Ad-free experience</span>
                     </li>
                   </ul>
                   <button
@@ -346,6 +364,18 @@ ${resumeText}`
                 </div>
               </div>
 
+              {/* Google Ad - Between Sections (Free Tier Only) */}
+              {!isPremium && (
+                <div className="mb-8">
+                  <ins className="adsbygoogle"
+                       style={{ display: 'block' }}
+                       data-ad-client="ca-pub-XXXXXXXXXX"
+                       data-ad-slot="1122334455"
+                       data-ad-format="auto"
+                       data-full-width-responsive="true"></ins>
+                </div>
+              )}
+
               <div className="bg-white rounded-2xl shadow-xl p-8">
                 <div className="flex items-center gap-3 mb-6">
                   <AlertCircle className="w-8 h-8 text-red-600" />
@@ -367,6 +397,18 @@ ${resumeText}`
         <div className="max-w-6xl mx-auto px-4 py-8 text-center text-gray-600">
           <p className="mb-2">Built to help job seekers get interviews faster</p>
           <p className="text-sm">Questions? Email support@resumeroaster.com</p>
+          
+          {/* Google Ad - Footer Ad (Free Tier Only) */}
+          {!isPremium && (
+            <div className="mt-6">
+              <ins className="adsbygoogle"
+                   style={{ display: 'block' }}
+                   data-ad-client="ca-pub-XXXXXXXXXX"
+                   data-ad-slot="5544332211"
+                   data-ad-format="auto"
+                   data-full-width-responsive="true"></ins>
+            </div>
+          )}
         </div>
       </div>
     </div>

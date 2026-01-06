@@ -1,51 +1,20 @@
 # Resume Roaster
 
-AI-powered resume analysis tool that provides brutally honest feedback to help job seekers improve their resumes.
+AI-powered resume analysis with brutal honesty.
 
 ## Features
-
-- Upload PDF, DOCX, or TXT resumes
-- Instant AI analysis powered by Claude
-- Brutally honest "roast" feedback
-- Overall score out of 100
-- Top 3 actionable fixes
-- Red flags identification
-- Premium upgrade options
+- Upload resumes (PDF, DOCX, TXT)
+- AI-powered analysis via Claude API
+- Brutally honest feedback
+- Score + actionable fixes
+- Google AdSense ads for free tier
+- Premium upgrade option ($19.99)
 
 ## Setup
+1. Get Anthropic API key from console.anthropic.com
+2. Replace 'YOUR_API_KEY_HERE' in src/ResumeRoaster.jsx
+3. Replace 'ca-pub-XXXXXXXXXX' with your AdSense publisher ID
+4. Replace ad slot IDs with your actual slot IDs
 
-1. Install dependencies:
-```bash
-npm install
-```
-
-2. Add your Anthropic API key in `src/ResumeRoaster.jsx`:
-```javascript
-'x-api-key': 'YOUR_API_KEY_HERE'
-```
-
-3. Run locally:
-```bash
-npm start
-```
-
-4. Build for production:
-```bash
-npm run build
-```
-
-## Deployment
-
-This app is ready to deploy on Vercel, Netlify, or any static hosting service.
-
-For Vercel:
-1. Push to GitHub
-2. Connect repository in Vercel
-3. Deploy!
-
-## Tech Stack
-
-- React 18
-- Tailwind CSS
-- Lucide React (icons)
-- Anthropic Claude API
+## Deploy
+Push to GitHub, connect to Vercel, done!
